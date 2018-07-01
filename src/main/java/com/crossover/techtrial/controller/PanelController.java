@@ -25,7 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-public class PanelController {
+public class PanelController
+{
 
   @Autowired
   PanelService panelService;
@@ -39,7 +40,8 @@ public class PanelController {
    * @return
    */
   @PostMapping(path = "/api/register")
-  public ResponseEntity<?> registerPanel(@RequestBody Panel panel) {
+  public ResponseEntity<?> registerPanel(@RequestBody Panel panel)
+  {
     panelService.register(panel);
     return  ResponseEntity.accepted().build();
   }
@@ -86,10 +88,42 @@ public class PanelController {
   public ResponseEntity<List<DailyElectricity>> allDailyElectricityFromYesterday(
       @PathVariable(value = "panel-serial") String panelSerial) {
     List<DailyElectricity> dailyElectricityForPanel = new ArrayList<>();
-    /**
-     * IMPLEMENT THE LOGIC HERE and FEEL FREE TO MODIFY OR ADD CODE TO RELATED CLASSES.
-     * MAKE SURE NOT TO CHANGE THE SIGNATURE OF ANY END POINT. NO PAGINATION IS NEEDED HERE.
-     */
+    List<Panel> panels = panelService.findAll();
+    for (Panel panel : panels)
+    {
+      DailyElectricity daily = new DailyElectricity();
+      Long sum = 0L,num = 0L,min = 0L,max = 0L;
+
+      List<HourlyElectricity> hours = hourlyElectricityService.getAllHourlyElectricityByPanelId(panel.getId());
+      for (HourlyElectricity hour : hours)
+      {
+
+        Long value=0L;
+        if (daily.getDate() != null)
+        {
+          daily.setDate(hour.getReadingAt().toLocalDate());
+        }
+        if(hour.getGeneratedElectricity()!= null)
+        {
+          value = hour.getGeneratedElectricity();
+        }
+        if (value > max)
+        {
+          max = value;
+        }
+        if (value < min) {
+          min = value;
+        }
+        sum += value;
+        num++;
+      }
+      Double avg = sum.doubleValue() / num.doubleValue();
+      daily.setAverage(avg);
+      daily.setSum(sum);
+      daily.setMax(max);
+      daily.setMin(min);
+      dailyElectricityForPanel.add(daily);
+    }
     return ResponseEntity.ok(dailyElectricityForPanel);
   }
 }

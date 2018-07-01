@@ -1,13 +1,11 @@
 package com.crossover.techtrial.model;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.lang.Nullable;
 
 /**
@@ -18,6 +16,8 @@ import org.springframework.lang.Nullable;
  */
 @Entity
 @Table(name = "panel")
+@NamedQuery(name="Panel.findAll", query="SELECT p FROM Panel p")
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Panel implements Serializable {
 
   private static final long serialVersionUID = -8527695980909864257L;

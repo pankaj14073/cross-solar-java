@@ -64,7 +64,8 @@ public class DailyElectricity implements Serializable {
   }
 
   @Override
-  public String toString() {
+  public String toString()
+  {
     return "DailyElectricity [date=" + date + ", sum=" + sum + ", average="
         + average + ", min=" + min + ", max=" + max + "]";
   }

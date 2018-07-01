@@ -1,16 +1,12 @@
 package com.crossover.techtrial.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 /**
@@ -22,8 +18,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "hourly_electricity")
+@NamedQuery(name="HourlyElectricity.findAll", query="SELECT h FROM HourlyElectricity h")
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class HourlyElectricity implements Serializable {
-
   private static final long serialVersionUID = -575347909928592140L;
   
   @Id

@@ -5,6 +5,8 @@ import com.crossover.techtrial.repository.PanelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 /**
  * PanelServiceImpl for panel related handling.
@@ -29,4 +31,6 @@ public class PanelServiceImpl implements PanelService {
   public Panel findBySerial(String serial) {
     return panelRepository.findBySerial(serial);
   }
+  @Override
+  public List<Panel> findAll() { return (List<Panel>) panelRepository.findAll(); }
 }
